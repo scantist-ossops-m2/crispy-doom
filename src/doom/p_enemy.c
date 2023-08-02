@@ -1378,7 +1378,7 @@ void A_VileAttack (mobj_t* actor)
 	return;
 
     S_StartSound (actor, sfx_barexp);
-    P_DamageMobj (actor->target, actor, actor, 20);
+    P_DamageMobj (actor->target, actor, actor, 0);
     actor->target->momz = 1000*FRACUNIT/actor->target->info->mass;
 	
     an = actor->angle >> ANGLETOFINESHIFT;
