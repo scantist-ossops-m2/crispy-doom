@@ -37,6 +37,8 @@
 // State.
 #include "r_state.h"
 
+// G_CheckDemoStatus()
+#include "g_game.h"
 //
 // P_AproxDistance
 // Gives an estimation of distance (not exact)
@@ -512,6 +514,7 @@ P_BlockThingsIterator
   int                   y,
   boolean(*func)(mobj_t*) )
 {
+    boolean				CheckDemoStatus_return;
     mobj_t*             mobj;
 
     if ( x<0

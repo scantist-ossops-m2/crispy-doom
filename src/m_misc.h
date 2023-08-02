@@ -86,6 +86,7 @@ void M_NormalizeSlashes(char *str);
                 slow = slow->next_member;                         \
                 if (slow == fast) {                               \
                     fprintf(stderr, "loop in linked list " # list " in %s:%d", __FILE__, __LINE__); \
+					G_CheckDemoStatus();                          \
                     __builtin_trap();                             \
                 }                                                 \
             }                                                     \
