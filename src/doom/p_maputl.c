@@ -514,7 +514,6 @@ P_BlockThingsIterator
   int                   y,
   boolean(*func)(mobj_t*) )
 {
-    boolean				CheckDemoStatus_return;
     mobj_t*             mobj;
 
     if ( x<0
