@@ -257,6 +257,7 @@ void P_XYMovement (mobj_t* mo)
     if (mo->flags & (MF_MISSILE | MF_SKULLFLY) )
 	return; 	// no friction for missiles ever
 		
+  // [crispy] fix mid-air speed boost when using noclip cheat
   if (!player || !(player->mo->flags & MF_NOCLIP))
     if (mo->z > mo->floorz)
 	return;		// no friction when airborne
