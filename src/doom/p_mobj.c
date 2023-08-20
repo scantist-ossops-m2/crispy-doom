@@ -259,8 +259,10 @@ void P_XYMovement (mobj_t* mo)
 		
   // [crispy] fix mid-air speed boost when using noclip cheat
   if (!player || !(player->mo->flags & MF_NOCLIP))
+  {
     if (mo->z > mo->floorz)
 	return;		// no friction when airborne
+  }
 
     if (mo->flags & MF_CORPSE)
     {
