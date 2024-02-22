@@ -1,7 +1,6 @@
 **General Fixes and Improvements**
 * Don't apply framecap when using `-timedemo` (@JNechaevsky).
 * Make demo footer compatible with PrBoom+/DSDA-Doom demo autoplay (@rfomin).
-* Use "Crispier" default setting for Windows native midi (@ceski-1).
 * Fix visual distortion when drawing planes (@JNechaevsky).
 * Support savegame loading for PWADs with spaces in their name.
 * Only update sounds once per gametic (@rfomin).
@@ -19,14 +18,16 @@
   used (@SoDOOManiac).
 * Use PWAD-provided color translation tables for colored blood.
 * "Status Bar" level stats are now left-aligned with HUD (@SoDOOManiac).
-* Fix visual glitch on door in Doom 2 MAP19 when running uncapped (@rfomin).
+* Fix visual glitch on door in Doom 2 MAP19 when running uncapped (@rfomin and
+  @JNechaevsky).
 * Correctly report complevel 3 in demo footer (@rfomin).
 * Armor bonus brightmap improvement (@JNechaevsky).
 * Improve detection of improper patches.
 * Only stretch short skies.
 * Fix bug where reviving with IDDQD can possibly leave player in a "zombie"
   state (@tomas7770).
-* Add reload, next level warp keys support and IDCLEV warp for demo playback (@JNechaevsky).
+* Add reload, next level warp keys support and IDCLEV warp for demo playback
+  (@JNechaevsky).
 * Enter key in Crispness menu behaves same as other games (@mikeday0).
 * Add support for `-coop_spawns` parameter (@JNechaevsky).
 * Allow non-power-of-2 wide sky textures.
@@ -36,19 +37,24 @@
 * Apply sideloading lump renaming to associated autoloaded WADs (@mikeday0).
 * Give Master Levels its own intermission picture MASTRINT (@mikeday0).
 * "Widescreen Aspect Ratio" -> "Aspect Ratio" in Crispness menu (@SoDOOManiac).
-* Improved True color code for better compatibility of drawing graphical patches when PLAYPAL and COLORMAP lumps have different color indexes.
-* Small optimizations on toggling gamma-correction levels in True color mode (@JNechaevsky).
+* Improved True color code for better compatibility of drawing graphical patches
+  when PLAYPAL and COLORMAP lumps have different color indexes.
+* Small optimizations on toggling gamma-correction levels in True color mode
+  (@JNechaevsky).
 
 **Crispy Heretic**
 * Add support for MBF sky transfers (@SilverMiner).
 * Display correct active artifact when loading game or entering a new level
   (@mikeday0).
 * Add support for SWITCHES lump (@SilverMiner).
-* Add support for True color rendering as compile-time option (@fabiangreffrath and @JNechaevsky).
+* Add support for True color rendering as compile-time option (@fabiangreffrath
+  and @JNechaevsky).
 * Minor visual player sprite fixes (@JNechaevsky).
 * Add support for `-coop_spawns` parameter (@JNechaevsky).
-* Fix scrolling floor textures bleeding through static floor textures (@JNechaevsky).
-* Unknown wall textures, map things and sector specials are no longer fatal (@JNechaevsky).
+* Fix scrolling floor textures bleeding through static floor textures
+  (@JNechaevsky).
+* Unknown wall textures, map things and sector specials are no longer fatal
+  (@JNechaevsky).
 * Removed MAXBUTTONS vanilla limit (@JNechaevsky)
 * Apply brightmaps to D'Sparil teleportation frames (@JNechaevsky).
 * Improve load times for complex levels (@JNechaevsky).
@@ -69,7 +75,8 @@
 * Fix crash if save is attempted when game has not started (@JNechaevsky).
 * Fix desync when running uncapped with polyobjects in level (@mikeday0).
 * Add support for demo fast-forward (@kitchen-ace).
-* Add support for True color rendering as compile-time option (@fabiangreffrath and @JNechaevsky).
+* Add support for True color rendering as compile-time option (@fabiangreffrath
+  and @JNechaevsky).
 * Fix medusa effect (@mikeday0).
 * Fix wall rendering visual glitch due to overflow (@JNechaevsky).
 * Fix teleportation visual glitches when running uncapped (@JNechaevsky).
