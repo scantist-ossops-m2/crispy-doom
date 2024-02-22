@@ -26,28 +26,30 @@
 * Only stretch short skies.
 * Fix bug where reviving with IDDQD can possibly leave player in a "zombie"
   state (@tomas7770).
-* Add reload, next level warp and IDCLEV warp for demo playback (@JNechaevsky).
+* Add reload, next level warp keys support and IDCLEV warp for demo playback (@JNechaevsky).
 * Enter key in Crispness menu behaves same as other games (@mikeday0).
 * Add support for `-coop_spawns` parameter (@JNechaevsky).
-* Allow non-power-of-2 wide sky textures (@JNechaevsky).
+* Allow non-power-of-2 wide sky textures.
 * Add support for dedicated No Rest for the Living music tracks.
 * Fix automap marks disappearing near left side of screen (@JNechaevsky).
 * Add support for Sigil II (@mikeday0).
 * Apply sideloading lump renaming to associated autoloaded WADs (@mikeday0).
 * Give Master Levels its own intermission picture MASTRINT (@mikeday0).
-* True color optimizations (@JNechaevsky).
 * "Widescreen Aspect Ratio" -> "Aspect Ratio" in Crispness menu (@SoDOOManiac).
+* Improved True color code for better compatibility of drawing graphical patches when PLAYPAL and COLORMAP lumps have different color indexes.
+* Small optimizations on toggling gamma-correction levels in True color mode (@JNechaevsky).
 
 **Crispy Heretic**
 * Add support for MBF sky transfers (@SilverMiner).
 * Display correct active artifact when loading game or entering a new level
   (@mikeday0).
 * Add support for SWITCHES lump (@SilverMiner).
-* Add support for true color rendering (@JNechaevsky).
+* Add support for True color rendering as compile-time option (@fabiangreffrath and @JNechaevsky).
 * Minor visual player sprite fixes (@JNechaevsky).
 * Add support for `-coop_spawns` parameter (@JNechaevsky).
-* Fix animated floor rendering glitch (@JNechaevsky).
-* "De-fatal" some vanilla error conditions (@JNechaevsky).
+* Fix scrolling floor textures bleeding through static floor textures (@JNechaevsky).
+* Unknown wall textures, map things and sector specials are no longer fatal (@JNechaevsky).
+* Removed MAXBUTTONS vanilla limit (@JNechaevsky)
 * Apply brightmaps to D'Sparil teleportation frames (@JNechaevsky).
 * Improve load times for complex levels (@JNechaevsky).
 * Add support for `-blockmap` parameter (@JNechaevsky).
@@ -67,7 +69,7 @@
 * Fix crash if save is attempted when game has not started (@JNechaevsky).
 * Fix desync when running uncapped with polyobjects in level (@mikeday0).
 * Add support for demo fast-forward (@kitchen-ace).
-* Add support for true color rendering (@JNechaevsky).
+* Add support for True color rendering as compile-time option (@fabiangreffrath and @JNechaevsky).
 * Fix medusa effect (@mikeday0).
 * Fix wall rendering visual glitch due to overflow (@JNechaevsky).
 * Fix teleportation visual glitches when running uncapped (@JNechaevsky).
