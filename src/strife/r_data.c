@@ -719,9 +719,20 @@ void R_InitColormaps (void)
 			{
 				const byte k = colormap[i];
 
-				r = gamma2table[crispy->gamma][playpal[3 * k + 0]] * (1. - scale) + gamma2table[crispy->gamma][0] * scale;
-				g = gamma2table[crispy->gamma][playpal[3 * k + 1]] * (1. - scale) + gamma2table[crispy->gamma][0] * scale;
-				b = gamma2table[crispy->gamma][playpal[3 * k + 2]] * (1. - scale) + gamma2table[crispy->gamma][0] * scale;
+				// [JN] Vanilla Strife is using COLORMAP indexes 224-255 without fading to black
+				// so they work as brightmaps. To replicate it, lock such indexes on first light level.
+				if (i > 223)
+				{
+					r = gamma2table[crispy->gamma][playpal[3 * k + 0]] + gamma2table[crispy->gamma][0] * scale;
+					g = gamma2table[crispy->gamma][playpal[3 * k + 1]] + gamma2table[crispy->gamma][0] * scale;
+					b = gamma2table[crispy->gamma][playpal[3 * k + 2]] + gamma2table[crispy->gamma][0] * scale;
+				}
+				else
+				{
+					r = gamma2table[crispy->gamma][playpal[3 * k + 0]] * (1. - scale) + gamma2table[crispy->gamma][0] * scale;
+					g = gamma2table[crispy->gamma][playpal[3 * k + 1]] * (1. - scale) + gamma2table[crispy->gamma][0] * scale;
+					b = gamma2table[crispy->gamma][playpal[3 * k + 2]] * (1. - scale) + gamma2table[crispy->gamma][0] * scale;
+				}
 
 				colormaps[j++] = 0xff000000 | (r << 16) | (g << 8) | b;
 			}
