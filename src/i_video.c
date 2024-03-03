@@ -106,7 +106,7 @@ static unsigned int rmask, gmask, bmask, amask; // [crispy] moved up here
 static const uint8_t blend_alpha = 0xa8;
 static const uint8_t blend_alpha_tinttab = 0x60; // 96
 static const uint8_t blend_alpha_alttinttab = 0x8E; // 142
-static const uint8_t blend_alpha_xlatab = 0xB2;// 178 (70% opacity)
+static const uint8_t blend_alpha_xlatab = 0xC0;// 192 (75% opacity)
 static const uint8_t blend_alpha_altxlatab = 0x40; // 64 (25% opacity)
 extern pixel_t* pal_color; // [crispy] evil hack to get FPS dots working as in Vanilla
 #else
@@ -2167,7 +2167,7 @@ const pixel_t I_BlendOverAltTinttab (const pixel_t bg, const pixel_t fg)
 	return amask | r | g | b;
 }
 
-// [crispy] More opaque (70%) XLATAB blending emulation, used for Strife
+// [crispy] More opaque (75%) XLATAB blending emulation, used for Strife
 const pixel_t I_BlendOverXlatab (const pixel_t bg, const pixel_t fg)
 {
 	const uint32_t r = ((blend_alpha_xlatab * (fg & rmask) + (0xff - blend_alpha_xlatab) * (bg & rmask)) >> 8) & rmask;

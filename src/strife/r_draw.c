@@ -300,8 +300,9 @@ void R_DrawMVisTLColumn(void)
         pixel_t col = xlatab[*dest + (src << 8)];
         *dest = col;
 #else
+        // [crispy] 75% opacity
         const pixel_t destrgb = src;
-        *dest = blendfunc(*dest, destrgb);
+        *dest = I_BlendOverXlatab(*dest, destrgb);
 #endif
         dest += SCREENWIDTH;
         frac += fracstep;
@@ -361,8 +362,9 @@ void R_DrawTLColumn(void)
         pixel_t col = xlatab[(*dest << 8) + src];
         *dest = col;
 #else
+        // [crispy] 25% opacity
         const pixel_t destrgb = src;
-        *dest = blendfunc(*dest, destrgb);
+        *dest = I_BlendOverAltXlatab(*dest, destrgb);
 #endif
         dest += SCREENWIDTH;
         frac += fracstep;
