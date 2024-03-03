@@ -726,6 +726,18 @@ void R_InitColormaps (void)
 				colormaps[j++] = 0xff000000 | (r << 16) | (g << 8) | b;
 			}
 		}
+
+		// [crispy] Sigil weapon effect (c == COLORMAPS)
+		for (i = 0; i < 256; i++)
+		{
+			const byte gray = 0xff -
+			     (byte) (0.299 * playpal[3 * i + 0] +
+			             0.587 * playpal[3 * i + 1] +
+			             0.114 * playpal[3 * i + 2]);
+			r = g = b = gamma2table[crispy->gamma][gray];
+
+			colormaps[j++] = 0xff000000 | (r << 16) | (g << 8) | b;
+		}
 	}
 	else
 	{
