@@ -49,12 +49,7 @@ extern boolean inhelpscreens; // [crispy]
 
 
 // Automap colors
-#ifndef CRISPY_TRUECOLOR
 #define BACKGROUND      240         // haleyjd [STRIFE]
-#else
-// [JN] For some reason, 240 in true color showing WHITE color.
-#define BACKGROUND      0
-#endif
 #define WALLCOLORS      5           // villsa [STRIFE]
 #define WALLRANGE       16
 #define TSWALLCOLORS    16
@@ -1895,7 +1890,11 @@ void AM_Drawer (void)
 
     if (!crispy->automapoverlay)
     {
+#ifndef CRISPY_TRUECOLOR
         AM_clearFB(BACKGROUND);
+#else
+        AM_clearFB(pal_color[BACKGROUND]);
+#endif
         pspr_interp = false; // [crispy] interpolate weapon bobbing
     }
 

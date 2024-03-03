@@ -1363,7 +1363,6 @@ static void D_IntroBackground(void)
     // Draw a 95-pixel rect from STARTUP0 starting at y=57 to (0,41) on the
     // screen (this was a memcpy directly to 0xA3340 in low DOS memory)
     // [crispy] use scaled function
-    // [JN] TODO - update for true color.
     V_DrawScaledBlock(0, 41, 320, 95, rawgfx_startup0 + (320*57));
 }
 
