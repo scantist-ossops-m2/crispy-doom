@@ -221,10 +221,7 @@ static const inline pixel_t drawxlatab (const pixel_t dest, const pixel_t source
 #ifndef CRISPY_TRUECOLOR
 {return xlatab[dest+(source<<8)];}
 #else
-// [JN] TODO - double check if it's representing vanilla Strife translucensy
-// well enough. Paletted approach is same to V_DrawTLPatch, but true color, 
-// in fact, doesnt seem to be opaque enough.
-{return I_BlendOverAltTinttab(dest, pal_color[source]);}
+{return I_BlendOverXlatab(dest, pal_color[source]);}
 #endif
 
 // [crispy] array of function pointers holding the different rendering functions
