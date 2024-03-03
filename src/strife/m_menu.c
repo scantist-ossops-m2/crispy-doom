@@ -2720,8 +2720,6 @@ boolean M_Responder (event_t* ev)
             I_SetPalette (W_CacheLumpName (DEH_String("PLAYPAL"),PU_CACHE));
 #else
             {
-            // [JN] TODO - externalize R_InitColormaps() to header file.
-            extern void R_InitColormaps (void);
             I_SetPalette (0);
             R_InitColormaps();
             inhelpscreens = true;

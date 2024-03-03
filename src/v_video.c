@@ -822,9 +822,7 @@ void V_DrawScaledBlock(int x, int y, int width, int height, byte *src)
 #ifndef CRISPY_TRUECOLOR
             *(dest + i * SCREENWIDTH + j) = *(src + (i >> crispy->hires) * width + (j >> crispy->hires));
 #else
-            // [JN] TODO - add support for true color. This should use
-            // pal_color[] array, which is initialized far *after* intro sequence.
-            *(dest + i * SCREENWIDTH + j) = *(src + (i >> crispy->hires) * width + (j >> crispy->hires));
+            *(dest + i * SCREENWIDTH + j) = pal_color[*(src + (i >> crispy->hires) * width + (j >> crispy->hires))];
 #endif
         }
     }

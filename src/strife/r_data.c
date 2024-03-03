@@ -766,6 +766,16 @@ void R_InitColormaps (void)
 	}
 
 	W_ReleaseLumpName("COLORMAP");
+	W_ReleaseLumpName("PLAYPAL");
+	R_InitPalColors();
+#endif
+}
+
+void R_InitPalColors (void)
+{
+	int i, j = 0;
+	byte r, g, b;
+	byte *const playpal = W_CacheLumpName("PLAYPAL", PU_STATIC);
 
 	if (!pal_color)
 	{
@@ -782,7 +792,6 @@ void R_InitColormaps (void)
 	}
 
 	W_ReleaseLumpName("PLAYPAL");
-#endif
 }
 
 // [crispy] initialize color translation and color string tables
