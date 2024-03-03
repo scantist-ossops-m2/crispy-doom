@@ -231,7 +231,13 @@ void D_Display (void)
     }
 
     // save the current screen if about to wipe
+#ifndef CRISPY_TRUECOLOR
     if (gamestate != wipegamestate)
+#else
+    // [JN] TODO - implement support for true color,
+    // wiping/fading via XLATAB is not possible!
+    if (gamestate != wipegamestate && false)
+#endif
     {
         screenwipe = true; // [crispy]
         wipe = true;
@@ -292,7 +298,11 @@ void D_Display (void)
 
     // clean up border stuff
     if (gamestate != oldgamestate && gamestate != GS_LEVEL)
+#ifndef CRISPY_TRUECOLOR
         I_SetPalette (W_CacheLumpName (DEH_String("PLAYPAL"),PU_CACHE));
+#else
+        I_SetPalette (0);
+#endif
 
     // see if the border needs to be initially drawn
     if (gamestate == GS_LEVEL && oldgamestate != GS_LEVEL)
@@ -1350,6 +1360,7 @@ static void D_IntroBackground(void)
     // Draw a 95-pixel rect from STARTUP0 starting at y=57 to (0,41) on the
     // screen (this was a memcpy directly to 0xA3340 in low DOS memory)
     // [crispy] use scaled function
+    // [JN] TODO - update for true color.
     V_DrawScaledBlock(0, 41, 320, 95, rawgfx_startup0 + (320*57));
 }
 

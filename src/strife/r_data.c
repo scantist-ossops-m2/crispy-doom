@@ -157,7 +157,8 @@ fixed_t*	spritewidth;
 fixed_t*	spriteoffset;
 fixed_t*	spritetopoffset;
 
-lighttable_t	*colormaps, *pal_color;
+lighttable_t	*colormaps;
+lighttable_t	*pal_color; // [crispy] array holding palette colors for true color mode
 
 
 //
@@ -690,38 +691,101 @@ void R_InitSpriteLumps (void)
 //
 void R_InitColormaps (void)
 {
+#ifndef CRISPY_TRUECOLOR
     int	lump;
 
     // Load in the light tables, 256 byte align tables.
     lump = W_GetNumForName(DEH_String("COLORMAP"));
     colormaps = W_CacheLumpNum(lump, PU_STATIC);
-    pal_color = colormaps;
+#else
+	int c, i, j = 0;
+	byte r, g, b;
 
-    // [crispy] initialize color translation and color strings tables
-    {
-        byte *playpal = W_CacheLumpName("PLAYPAL", PU_STATIC);
-        char c[3];
-        int i, j;
+	byte *const playpal = W_CacheLumpName("PLAYPAL", PU_STATIC);
+	byte *const colormap = W_CacheLumpName("COLORMAP", PU_STATIC);
 
-        if (!crstr)
-            crstr = I_Realloc(NULL, CRMAX * sizeof(*crstr));
+	if (!colormaps)
+	{
+		colormaps = (lighttable_t*) Z_Malloc((NUMCOLORMAPS + 1) * 256 * sizeof(lighttable_t), PU_STATIC, 0);
+	}
 
-        // [crispy] CRMAX - 2: don't override the original GREN and BLUE2 Boom tables
-        for (i = 0; i < CRMAX - 2; i++)
-        {
-            for (j = 0; j < 256; j++)
-            {
-                cr[i][j] = V_Colorize(playpal, i, j, false);
-            }
+	if (crispy->truecolor)
+	{
+		for (c = 0; c < NUMCOLORMAPS; c++)
+		{
+			const float scale = 1. * c / NUMCOLORMAPS;
 
-            M_snprintf(c, sizeof(c), "%c%c", cr_esc, '0' + i);
-            crstr[i] = M_StringDuplicate(c);
-        }
+			for (i = 0; i < 256; i++)
+			{
+				const byte k = colormap[i];
 
-        W_ReleaseLumpName("PLAYPAL");
-    }
+				r = gamma2table[crispy->gamma][playpal[3 * k + 0]] * (1. - scale) + gamma2table[crispy->gamma][0] * scale;
+				g = gamma2table[crispy->gamma][playpal[3 * k + 1]] * (1. - scale) + gamma2table[crispy->gamma][0] * scale;
+				b = gamma2table[crispy->gamma][playpal[3 * k + 2]] * (1. - scale) + gamma2table[crispy->gamma][0] * scale;
+
+				colormaps[j++] = 0xff000000 | (r << 16) | (g << 8) | b;
+			}
+		}
+	}
+	else
+	{
+		for (c = 0; c <= NUMCOLORMAPS; c++)
+		{
+			for (i = 0; i < 256; i++)
+			{
+				r = gamma2table[crispy->gamma][playpal[3 * colormap[c * 256 + i] + 0]] & ~3;
+				g = gamma2table[crispy->gamma][playpal[3 * colormap[c * 256 + i] + 1]] & ~3;
+				b = gamma2table[crispy->gamma][playpal[3 * colormap[c * 256 + i] + 2]] & ~3;
+
+				colormaps[j++] = 0xff000000 | (r << 16) | (g << 8) | b;
+			}
+		}
+	}
+
+	W_ReleaseLumpName("COLORMAP");
+
+	if (!pal_color)
+	{
+		pal_color = (pixel_t*) Z_Malloc(256 * sizeof(pixel_t), PU_STATIC, 0);
+	}
+
+	for (i = 0, j = 0; i < 256; i++)
+	{
+		r = gamma2table[crispy->gamma][playpal[3 * i + 0]];
+		g = gamma2table[crispy->gamma][playpal[3 * i + 1]];
+		b = gamma2table[crispy->gamma][playpal[3 * i + 2]];
+
+		pal_color[j++] = 0xff000000 | (r << 16) | (g << 8) | b;
+	}
+
+	W_ReleaseLumpName("PLAYPAL");
+#endif
 }
 
+// [crispy] initialize color translation and color string tables
+static void R_InitHSVColors (void)
+{
+	byte *playpal = W_CacheLumpName("PLAYPAL", PU_STATIC);
+	char c[3];
+	int i, j;
+
+	if (!crstr)
+	    crstr = I_Realloc(NULL, CRMAX * sizeof(*crstr));
+
+	// [crispy] CRMAX - 2: don't override the original GREN and BLUE2 Boom tables
+	for (i = 0; i < CRMAX - 2; i++)
+	{
+	    for (j = 0; j < 256; j++)
+	    {
+		cr[i][j] = V_Colorize(playpal, i, j, false);
+	    }
+
+	    M_snprintf(c, sizeof(c), "%c%c", cr_esc, '0' + i);
+	    crstr[i] = M_StringDuplicate(c);
+	}
+
+	W_ReleaseLumpName("PLAYPAL");
+}
 
 
 //
@@ -753,6 +817,8 @@ void R_InitData (void)
         D_IntroTick();
 
     R_InitColormaps ();
+    // [crispy] Initialize color translation and color string tables.
+    R_InitHSVColors ();
 }
 
 

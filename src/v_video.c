@@ -216,6 +216,16 @@ static const inline pixel_t drawalttinttab (const pixel_t dest, const pixel_t so
 #else
 {return I_BlendOverAltTinttab(dest, pal_color[source]);}
 #endif
+// V_DrawXlaPatch (translucent patch, no coloring or color-translation are used)
+static const inline pixel_t drawxlatab (const pixel_t dest, const pixel_t source)
+#ifndef CRISPY_TRUECOLOR
+{return xlatab[dest+(source<<8)];}
+#else
+// [JN] TODO - double check if it's representing vanilla Strife translucensy
+// well enough. Paletted approach is same to V_DrawTLPatch, but true color, 
+// in fact, doesnt seem to be opaque enough.
+{return I_BlendOverAltTinttab(dest, pal_color[source]);}
+#endif
 
 // [crispy] array of function pointers holding the different rendering functions
 typedef const pixel_t drawpatchpx_t (const pixel_t dest, const pixel_t source);
@@ -570,6 +580,9 @@ void V_DrawXlaPatch(int x, int y, patch_t * patch)
     byte *source;
     int w;
 
+    // [crispy] translucent patch, no coloring or color-translation are used
+    drawpatchpx_t *const drawpatchpx = drawxlatab;
+
     y -= SHORT(patch->topoffset);
     x -= SHORT(patch->leftoffset);
     x += WIDESCREENDELTA; // [crispy] horizontal widescreen offset
@@ -601,7 +614,7 @@ void V_DrawXlaPatch(int x, int y, patch_t * patch)
 
             while(count--)
             {
-                *dest = xlatab[*dest + (source[srccol >> FRACBITS] << 8)];
+                *dest = drawpatchpx(*dest, source[srccol >> FRACBITS]);
                 srccol += dyi;
                 dest += SCREENWIDTH;
             }
@@ -784,7 +797,7 @@ void V_DrawBlock(int x, int y, int width, int height, pixel_t *src)
 } 
 
 // [crispy] scaled version of V_DrawBlock()
-void V_DrawScaledBlock(int x, int y, int width, int height, pixel_t *src)
+void V_DrawScaledBlock(int x, int y, int width, int height, byte *src)
 {
     pixel_t *dest;
     int i, j;
@@ -809,7 +822,13 @@ void V_DrawScaledBlock(int x, int y, int width, int height, pixel_t *src)
     {
         for (j = 0; j < (width << crispy->hires); j++)
         {
+#ifndef CRISPY_TRUECOLOR
             *(dest + i * SCREENWIDTH + j) = *(src + (i >> crispy->hires) * width + (j >> crispy->hires));
+#else
+            // [JN] TODO - add support for true color. This should use
+            // pal_color[] array, which is initialized far *after* intro sequence.
+            *(dest + i * SCREENWIDTH + j) = *(src + (i >> crispy->hires) * width + (j >> crispy->hires));
+#endif
         }
     }
 }

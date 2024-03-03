@@ -49,7 +49,12 @@ extern boolean inhelpscreens; // [crispy]
 
 
 // Automap colors
+#ifndef CRISPY_TRUECOLOR
 #define BACKGROUND      240         // haleyjd [STRIFE]
+#else
+// [JN] For some reason, 240 in true color showing WHITE color.
+#define BACKGROUND      0
+#endif
 #define WALLCOLORS      5           // villsa [STRIFE]
 #define WALLRANGE       16
 #define TSWALLCOLORS    16
@@ -1235,7 +1240,12 @@ AM_drawFline_Vanilla
 	return;
     }
 
-#define PUTDOT(xx,yy,cc) fb[(yy)*f_w+(xx)]=(cc)
+#define PUTDOT_RAW(xx,yy,cc) fb[(yy)*f_w+(xx)]=(cc)
+#ifndef CRISPY_TRUECOLOR
+#define PUTDOT(xx,yy,cc) PUTDOT_RAW(xx,yy,cc)
+#else
+#define PUTDOT(xx,yy,cc) PUTDOT_RAW(xx,yy,(pal_color[(cc)]))
+#endif
 
     dx = fl->b.x - fl->a.x;
     ax = 2 * (dx<0 ? -dx : dx);
@@ -1307,7 +1317,7 @@ static void AM_drawFline_Smooth(fline_t* fl, int color)
        the line and so needs no weighting */
     /* Always write the raw color value because we've already performed the necessary lookup
      * into colormap */
-    PUTDOT(X0, Y0, BaseColor[0]);
+    PUTDOT_RAW(X0, Y0, BaseColor[0]);
 
     if ((DeltaX = X1 - X0) >= 0)
     {
@@ -1327,7 +1337,7 @@ static void AM_drawFline_Smooth(fline_t* fl, int color)
         while (DeltaX-- != 0)
         {
             X0 += XDir;
-            PUTDOT(X0, Y0, BaseColor[0]);
+            PUTDOT_RAW(X0, Y0, BaseColor[0]);
         }
         return;
     }
@@ -1337,7 +1347,7 @@ static void AM_drawFline_Smooth(fline_t* fl, int color)
         do
         {
             Y0++;
-            PUTDOT(X0, Y0, BaseColor[0]);
+            PUTDOT_RAW(X0, Y0, BaseColor[0]);
         }
         while (--DeltaY != 0);
         return;
@@ -1349,7 +1359,7 @@ static void AM_drawFline_Smooth(fline_t* fl, int color)
         {
             X0 += XDir;
             Y0++;
-            PUTDOT(X0, Y0, BaseColor[0]);
+            PUTDOT_RAW(X0, Y0, BaseColor[0]);
         }
         while (--DeltaY != 0);
         return;
@@ -1383,12 +1393,12 @@ static void AM_drawFline_Smooth(fline_t* fl, int color)
                intensity weighting for this pixel, and the complement of the
                weighting for the paired pixel */
             Weighting = ErrorAcc >> IntensityShift;
-            PUTDOT(X0, Y0, BaseColor[Weighting]);
-            PUTDOT(X0 + XDir, Y0, BaseColor[(Weighting ^ WeightingComplementMask)]);
+            PUTDOT_RAW(X0, Y0, BaseColor[Weighting]);
+            PUTDOT_RAW(X0 + XDir, Y0, BaseColor[(Weighting ^ WeightingComplementMask)]);
         }
         /* Draw the final pixel, which is always exactly intersected by the line
            and so needs no weighting */
-        PUTDOT(X1, Y1, BaseColor[0]);
+        PUTDOT_RAW(X1, Y1, BaseColor[0]);
         return;
     }
     /* It's an X-major line; calculate 16-bit fixed-point fractional part of a
@@ -1410,13 +1420,13 @@ static void AM_drawFline_Smooth(fline_t* fl, int color)
            intensity weighting for this pixel, and the complement of the
            weighting for the paired pixel */
         Weighting = ErrorAcc >> IntensityShift;
-        PUTDOT(X0, Y0, BaseColor[Weighting]);
-        PUTDOT(X0, Y0 + 1, BaseColor[(Weighting ^ WeightingComplementMask)]);
+        PUTDOT_RAW(X0, Y0, BaseColor[Weighting]);
+        PUTDOT_RAW(X0, Y0 + 1, BaseColor[(Weighting ^ WeightingComplementMask)]);
 
     }
     /* Draw the final pixel, which is always exactly intersected by the line
        and so needs no weighting */
-    PUTDOT(X1, Y1, BaseColor[0]);
+    PUTDOT_RAW(X1, Y1, BaseColor[0]);
 }
 
 //
