@@ -231,15 +231,10 @@ void D_Display (void)
     }
 
     // save the current screen if about to wipe
-#ifndef CRISPY_TRUECOLOR
     if (gamestate != wipegamestate)
-#else
-    // [JN] TODO - implement support for true color,
-    // wiping/fading via XLATAB is not possible!
-    if (gamestate != wipegamestate && false)
-#endif
     {
         screenwipe = true; // [crispy]
+        fade_safe_tics = CROSSFADETICS; // [crispy] arm fail-safe crossfade counter
         wipe = true;
         wipe_StartScreen(0, 0, SCREENWIDTH, SCREENHEIGHT);
     }

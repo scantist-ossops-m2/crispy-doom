@@ -42,6 +42,9 @@ static pixel_t*	wipe_scr_start;
 static pixel_t*	wipe_scr_end;
 static pixel_t*	wipe_scr;
 
+// [crispy] Additional fail-safe counter for performing crossfade effect.
+// Full crossfading takes 13 game tics and counter is armed in D_Display.
+int fade_safe_tics;
 
 void
 wipe_shittyColMajorXform
@@ -59,7 +62,7 @@ wipe_shittyColMajorXform
 	for(x=0;x<width;x++)
 	    dest[x*height+y] = array[y*width+x];
 
-    memcpy(array, dest, width*height*2);
+    memcpy(array, dest, width*height*sizeof(*dest));
 
     Z_Free(dest);
 
@@ -72,7 +75,7 @@ wipe_initColorXForm
   int	height,
   int	ticks )
 {
-    memcpy(wipe_scr, wipe_scr_start, width*height);
+    memcpy(wipe_scr, wipe_scr_start, width*height*sizeof(*wipe_scr));
     return 0;
 }
 
@@ -95,9 +98,12 @@ wipe_doColorXForm
     int   i;
     boolean changed = false;
 
+    // [crispy] reduce fail-safe crossfade counter tics
+    fade_safe_tics--;
+
     for(i = pix; i > 0; i--)
     {
-        if(*cur_screen != *end_screen)
+        if(*cur_screen != *end_screen && fade_safe_tics)
         {
             changed = true;
 #ifndef CRISPY_TRUECOLOR
@@ -135,7 +141,7 @@ wipe_initMelt
     int i, r;
     
     // copy start screen to main screen
-    memcpy(wipe_scr, wipe_scr_start, width*height);
+    memcpy(wipe_scr, wipe_scr_start, width*height*sizeof(*wipe_scr));
     
     // makes this wipe faster (in theory)
     // to have stuff in column-major format
@@ -273,8 +279,14 @@ wipe_ScreenWipe
     {
 	go = 1;
         // haleyjd 20110629 [STRIFE]: We *must* use a temp buffer here.
+#ifndef CRISPY_TRUECOLOR
 	wipe_scr = (pixel_t *) Z_Malloc(width*height, PU_STATIC, 0); // DEBUG
 	//wipe_scr = I_VideoBuffer;
+#else
+	// [crispy] In TrueColor render perform everything in common buffer.
+	// Otherwise serious malloc errors will happen.
+	wipe_scr = I_VideoBuffer;
+#endif
 	(*wipes[wipeno*3])(width, height, ticks);
     }
 
@@ -282,8 +294,10 @@ wipe_ScreenWipe
     V_MarkRect(0, 0, width, height);
     rc = (*wipes[wipeno*3+1])(width, height, ticks);
 
+#ifndef CRISPY_TRUECOLOR
     // haleyjd 20110629 [STRIFE]: Copy temp buffer to the real screen.
     V_DrawBlock(x, y, width, height, wipe_scr);
+#endif
 
     // final stuff
     if (rc)
