@@ -2187,6 +2187,16 @@ const pixel_t I_BlendOverAltXlatab (const pixel_t bg, const pixel_t fg)
 	return amask | r | g | b;
 }
 
+// [crispy] Perform screen crossfading effect by given amount of opacity, used for Strife
+const pixel_t I_BlendOverCrossfade (const pixel_t bg, const pixel_t fg, const int amount)
+{
+	const uint32_t r = ((amount * (fg & rmask) + (0xff - amount) * (bg & rmask)) >> 8) & rmask;
+	const uint32_t g = ((amount * (fg & gmask) + (0xff - amount) * (bg & gmask)) >> 8) & gmask;
+	const uint32_t b = ((amount * (fg & bmask) + (0xff - amount) * (bg & bmask)) >> 8) & bmask;
+
+	return amask | r | g | b;
+}
+
 const pixel_t (*blendfunc) (const pixel_t fg, const pixel_t bg) = I_BlendOver;
 
 const pixel_t I_MapRGB (const uint8_t r, const uint8_t g, const uint8_t b)

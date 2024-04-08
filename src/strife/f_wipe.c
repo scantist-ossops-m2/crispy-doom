@@ -109,7 +109,9 @@ wipe_doColorXForm
 #ifndef CRISPY_TRUECOLOR
             *cur_screen = xlatab[(*cur_screen << 8) + *end_screen];
 #else
-            *cur_screen = I_BlendOverXlatab(*cur_screen, *end_screen);
+            // [crispy] perform crossfading effect with 13 given opacity steps, multipled by 19:
+            // 247, 228, 209, 190, 171, 152, 133, 114, 95, 76, 57, 38, 19
+            *cur_screen = I_BlendOverCrossfade(*end_screen, *cur_screen, fade_safe_tics * 19);
 #endif
         }
         ++cur_screen;

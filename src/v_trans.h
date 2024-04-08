@@ -67,6 +67,7 @@ extern const pixel_t I_BlendOverTinttab (const pixel_t bg, const pixel_t fg);
 extern const pixel_t I_BlendOverAltTinttab (const pixel_t bg, const pixel_t fg);
 extern const pixel_t I_BlendOverXlatab (const pixel_t bg, const pixel_t fg);
 extern const pixel_t I_BlendOverAltXlatab (const pixel_t bg, const pixel_t fg);
+extern const pixel_t I_BlendOverCrossfade (const pixel_t bg, const pixel_t fg, const int amount);
 #endif
 
 int V_GetPaletteIndex(byte *palette, int r, int g, int b);
