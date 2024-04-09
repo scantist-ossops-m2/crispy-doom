@@ -111,7 +111,7 @@ wipe_doColorXForm
 #else
             // [crispy] perform crossfading effect with 13 given opacity steps, multipled by 19:
             // 247, 228, 209, 190, 171, 152, 133, 114, 95, 76, 57, 38, 19
-            *cur_screen = I_BlendOverCrossfade(*end_screen, *cur_screen, fade_safe_tics * 19);
+            *cur_screen = I_BlendOver(*end_screen, *cur_screen, fade_safe_tics * 19);
 #endif
         }
         ++cur_screen;

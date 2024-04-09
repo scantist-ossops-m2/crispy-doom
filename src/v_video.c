@@ -184,14 +184,14 @@ static const inline pixel_t drawpatchpx10 (const pixel_t dest, const pixel_t sou
 #ifndef CRISPY_TRUECOLOR
 {return tranmap[(dest<<8)+source];}
 #else
-{return I_BlendOver(dest, pal_color[source]);}
+{return I_BlendOverTranmap(dest, pal_color[source]);}
 #endif
 // (4) color-translated, translucent patch
 static const inline pixel_t drawpatchpx11 (const pixel_t dest, const pixel_t source)
 #ifndef CRISPY_TRUECOLOR
 {return tranmap[(dest<<8)+dp_translation[source]];}
 #else
-{return I_BlendOver(dest, pal_color[dp_translation[source]]);}
+{return I_BlendOverTranmap(dest, pal_color[dp_translation[source]]);}
 #endif
 
 // [crispy] TINTTAB rendering functions:
