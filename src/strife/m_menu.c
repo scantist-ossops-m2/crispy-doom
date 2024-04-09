@@ -2719,13 +2719,11 @@ boolean M_Responder (event_t* ev)
 #ifndef CRISPY_TRUECOLOR
             I_SetPalette (W_CacheLumpName (DEH_String("PLAYPAL"),PU_CACHE));
 #else
-            {
             I_SetPalette (0);
             R_InitColormaps();
             inhelpscreens = true;
             R_FillBackScreen();
             viewactive = false;
-            }
 #endif
             return true;
         }

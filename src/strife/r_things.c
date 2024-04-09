@@ -495,7 +495,7 @@ R_DrawVisSprite
 
     colfunc = basecolfunc;
 #ifdef CRISPY_TRUECOLOR
-    blendfunc = I_BlendOverTinttab;
+    blendfunc = I_BlendOverXlatab;
 #endif
 }
 
