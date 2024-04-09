@@ -2033,9 +2033,9 @@ void D_DoomMain (void)
     I_GraphicsCheckCommandLine();
 
     // [crispy] Initialize and generate gamma-correction levels and
-    // pal_color[] array (TrueColor only) before introduction sequence.
+    // colormaps/pal_color arrays before introduction sequence.
     I_SetGammaTable();
-    R_InitPalColors();
+    R_InitColormaps ();
 
     // haleyjd 20110206 [STRIFE] Startup the introduction sequence
     D_InitIntroSequence();

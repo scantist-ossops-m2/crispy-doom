@@ -766,16 +766,6 @@ void R_InitColormaps (void)
 	}
 
 	W_ReleaseLumpName("COLORMAP");
-	W_ReleaseLumpName("PLAYPAL");
-#endif
-}
-
-void R_InitPalColors (void)
-{
-#ifdef CRISPY_TRUECOLOR
-	int i, j = 0;
-	byte r, g, b;
-	byte *const playpal = W_CacheLumpName("PLAYPAL", PU_STATIC);
 
 	if (!pal_color)
 	{
@@ -847,7 +837,9 @@ void R_InitData (void)
     else
         D_IntroTick();
 
-    R_InitColormaps ();
+    // [crispy] Moved to D_DoomMain for color arrays
+    // initialization before introduction sequence.
+    // R_InitColormaps ();
     // [crispy] Initialize color translation and color string tables.
     R_InitHSVColors ();
 }

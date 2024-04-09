@@ -2724,6 +2724,7 @@ boolean M_Responder (event_t* ev)
             R_InitColormaps();
             inhelpscreens = true;
             R_FillBackScreen();
+            viewactive = false;
             }
 #endif
             return true;
