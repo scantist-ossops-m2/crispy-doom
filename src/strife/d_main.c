@@ -2032,14 +2032,11 @@ void D_DoomMain (void)
 
     I_GraphicsCheckCommandLine();
 
-    // [crispy] we have to predefine pal_colors[] array for proper
-    // drawing of intro sequence
-    // [JN] TODO - probably unoptimal, R_InitPalColors is called
-    // second time in R_InitColormaps, otherwise patches will be
-    // drawn with solid black color.
-#ifdef CRISPY_TRUECOLOR
+    // [crispy] Initialize and generate gamma-correction levels and
+    // pal_color[] array (TrueColor only) before introduction sequence.
+    I_SetGammaTable();
     R_InitPalColors();
-#endif
+
     // haleyjd 20110206 [STRIFE] Startup the introduction sequence
     D_InitIntroSequence();
 

@@ -767,12 +767,12 @@ void R_InitColormaps (void)
 
 	W_ReleaseLumpName("COLORMAP");
 	W_ReleaseLumpName("PLAYPAL");
-	R_InitPalColors();
 #endif
 }
 
 void R_InitPalColors (void)
 {
+#ifdef CRISPY_TRUECOLOR
 	int i, j = 0;
 	byte r, g, b;
 	byte *const playpal = W_CacheLumpName("PLAYPAL", PU_STATIC);
@@ -792,6 +792,7 @@ void R_InitPalColors (void)
 	}
 
 	W_ReleaseLumpName("PLAYPAL");
+#endif
 }
 
 // [crispy] initialize color translation and color string tables
@@ -829,8 +830,6 @@ static void R_InitHSVColors (void)
 void R_InitData (void)
 {
     R_InitTextures ();
-    // [crispy] Initialize and generate gamma-correction levels.
-    I_SetGammaTable();
     if(devparm)
         printf (".");
     else
