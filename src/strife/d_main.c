@@ -234,7 +234,6 @@ void D_Display (void)
     if (gamestate != wipegamestate)
     {
         screenwipe = true; // [crispy]
-        fade_safe_tics = CROSSFADETICS; // [crispy] arm fail-safe crossfade counter
         wipe = true;
         wipe_StartScreen(0, 0, SCREENWIDTH, SCREENHEIGHT);
     }

@@ -60,8 +60,4 @@ wipe_ScreenWipe
   int		height,
   int		ticks );
 
-// [crispy] Additional fail-safe counter for performing crossfade effect.
-#define CROSSFADETICS  13;
-extern int fade_safe_tics;
-
 #endif

@@ -43,8 +43,7 @@ static pixel_t*	wipe_scr_end;
 static pixel_t*	wipe_scr;
 
 // [crispy] Additional fail-safe counter for performing crossfade effect.
-// Full crossfading takes 13 game tics and counter is armed in D_Display.
-int fade_safe_tics;
+static int fade_counter;
 
 void
 wipe_shittyColMajorXform
@@ -76,6 +75,9 @@ wipe_initColorXForm
   int	ticks )
 {
     memcpy(wipe_scr, wipe_scr_start, width*height*sizeof(*wipe_scr));
+    // [crispy] arm fail-safe crossfade counter with
+    // 13 screen transitions, "zero" count won't be used.
+    fade_counter = 14;
     return 0;
 }
 
@@ -99,11 +101,11 @@ wipe_doColorXForm
     boolean changed = false;
 
     // [crispy] reduce fail-safe crossfade counter tics
-    fade_safe_tics--;
+    fade_counter--;
 
     for(i = pix; i > 0; i--)
     {
-        if(*cur_screen != *end_screen && fade_safe_tics)
+        if(*cur_screen != *end_screen && fade_counter)
         {
             changed = true;
 #ifndef CRISPY_TRUECOLOR
@@ -111,7 +113,7 @@ wipe_doColorXForm
 #else
             // [crispy] perform crossfading effect with 13 given opacity steps, multipled by 19:
             // 247, 228, 209, 190, 171, 152, 133, 114, 95, 76, 57, 38, 19
-            *cur_screen = I_BlendOver(*end_screen, *cur_screen, fade_safe_tics * 19);
+            *cur_screen = I_BlendOver(*end_screen, *cur_screen, fade_counter * 19);
 #endif
         }
         ++cur_screen;
