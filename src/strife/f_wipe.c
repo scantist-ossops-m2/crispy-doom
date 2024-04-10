@@ -19,8 +19,8 @@
 #include <string.h>
 
 #include "z_zone.h"
-#include "v_trans.h" // [crispy] blending functions
 #include "i_video.h"
+#include "v_trans.h" // [crispy] blending functions
 #include "v_video.h"
 #include "m_random.h"
 
